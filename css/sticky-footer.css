@@ -27,6 +27,9 @@
       .footer {
         background-color: #222222;
       }
+      .footer p {
+	      text-align: center;
+      }
 
       /* Lastly, apply responsive CSS fixes as necessary */
       @media (max-width: 767px) {

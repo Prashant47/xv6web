@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Modern Business - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Sticky Footer -->
+        <link href="css/sticky-footer.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Learn OS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active">
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Doxygen</a>
+                    </li>
+                    <li>
+                        <a href="contact.html">OS Resources</a>
+                    </li>
+                    
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/zipball/master">Download <strong>ZIP File</strong></a>
+		    </li>
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/tarball/master">Download <strong>TAR Ball</strong></a>
+		    </li>
+		    <li>
+			<a href="http://github.com/prashant47/xv6">Fork On <strong>GitHub</strong></a>
+		    <li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">About
+                    <small>xv6-picoc </small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active">Page Name </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+	 <p  style="font-size:140%" >
+
+	<h2>1.1 Need of developing a prototype Operating System: </h2>	 
+	<br>
+	After great success of Linux kernel, more and more developers (nearly 20391 for v3.5)
+	across the world are finding greater interest in the particular model adopted for it’s
+	development. Also Operating System is conventionally regarded as the most difficult
+	as well as intriguing piece of code. It is been observed through some of the formal
+	methods of public opinion gathering and social network data that it is the most sought
+	after software and college level course in undergraduate programs of computer science
+	engineering. But rather a contradictory result shows that average age group of latest
+	Linus kernels contributors is 36 years which is much more than expected age of 25 years.
+	A deep inquiry into this fact poses a several question regarding the current method of
+	teaching OS at entry level college courses.
+	<br>
+	<br>
+	Most modern day kernels have large supports large number of system calls due to
+	their backward compatability and because of various services that they provide. As a
+	result though student grasps the theoretical knowledge about OS concepts, one remains
+	marginally aloof of the core implementation details which restraints him from participat-
+	ing in active OS development. Hence most fundamental aim of this project is to develop
+	small prototype Unix like OS that can be essentially used for education purposes. The
+	main reason behind developing such OS is to help wide spread student community in
+	understanding the basics of OS through practical demonstrations. Such OS can be used
+	by educators around the world for teaching basic working of system softwares and their
+	interaction with different OS components.
+	<br>
+	Hence considering this we have developed a small OS which can be used and easily
+	learnt too. But only developing such small OS wouldn’t suffice. As a result the important
+	part of this project is to develop some built in tool in such small educational OS to give
+	real time insight of it. And to produce a comprehensive course material containing the
+	documentation, tutorials and set of assignments that will probably give more deeper
+	insight into code base of this OS.
+
+	<br>
+	<br>
+
+	<h2>1.2 Components of education OS:</h2>
+	<br>
+	<br>
+	The critical issue in this project is to decide which softwares to be ported into such
+	educational purpose OS. Because considering the prime aim of this project it is very
+	much necessary to maintain the overall size of code base relatively small enough for
+	understanding of student level developers. In every OS, language processing activities
+	arise due to the differences between the manner in which a software designer expresses
+	the ideas and way computer instructions are understood by computer hardwares. So
+	there is tight binding between system softwares which convert high level programming
+	language instructs into machine language and OS which is responsible for executing that
+	program. Hence this OS includes a small interpreter named PicoC and a standalone
+	linkage editor developed specifically for this purpose.
+	<br>
+	<br>
+
+	<h2>1.3 Reason for porting Interpreter in education OS: </h2>
+	<br>
+	<br>
+	One of the most crucial and recent change in software development cycle is reduced time
+	between development and deployment. Hence newer test mechanism such as /textitUnit
+	Testing has evolved. Because of this programmers these days make lots of changes to
+	source code in any given quantum of development time. When using a compiler, if a
+	change is made to the source, then compiler translate all the altered source files and
+	link all of those object files together by repeating whole test cycle before the program
+	can be executed. This process become cumbersome for larger program size. In contrast
+	to this a programmer using an interpreter can have marginal benefit, as the interpreter
+	translates the code being worked on to an intermediate representation , thus speeding up
+	the process of retesting. Also along with speed up in testing process, developers often find
+	interpreted languages to be more useful considering platform independant build process
+	for them. Features that are easier to implement in interpreters than in compilers include:
+	1. Reflection and reflective use of evaluator
+	2. Dynamic typing
+	3. Smaller executable program size
+	4. Dynamic Binding.
+	Hence languages such as Java and Python have become by default choice of many
+	software architects because of their comparatively lesser time of development and source
+	readability
+	<br>
+	<br>
+
+	<h2>1.4 Reason for porting standalone Linkage editor to OS:</h2>
+
+	1. Understanding the fundamental working of linkers helps in building large programs.
+	Programmers who are involved in building large softwares often have to deal with
+	linking several vendor modules to their in-house modules, some libraries, or incom-
+	patible library versions. Unless one understands how a linker resolves references,
+	what a library is, and how a linker uses a library to resolve references, many a time
+	linking process becomes quite a nightmare.
+	2. Understanding linkers helps one in understanding the basic programming constructs
+	which as a result saves him from commiting dangerous programming errors The
+	algorithm that Unix linkers use when they resolve symbol references can affect im-
+	plementations of a program written in that language.
+	3. Understanding linking process helps in understanding how language scope rules are
+	implemented.For example, linking process can clearly give an overview of the meth-
+	ods used to differentiate between global variable and local variables having the same
+	names. This makes programmers aware of the insignificance of naming used in pro-
+	grammes but of their internal representations.
+	4. Understanding linking helps in understanding other important system softwares and
+	some kernel modules. For example executable files produced by linkers are processed
+	by loaders during loading and running programs, manging it’s memory and other
+	hardware resources.
+	5. Understanding linking will better enable you to decide between use of shared libraries
+	against static libraries along with it’s pros and cons. However, with the de-facto
+	use of shared libraries and dynamic linking in modern operating systems, linking
+	has become an important part of development process that provides an advanced
+	user more control and power over system.Also, most Web servers rely on dynamic
+	linking of shared libraries to serve dynamic content. Though initially the process
+	to upgrade all the servers from static linking to dynamic was cumbersome, it has
+	provided significant improvements in the performance.
+	<br>
+	<br>
+	<h2>1.5 Reason for designing built in code review utilities: </h2>
+	<br>
+	<br>
+	As mentioned above the main purpose of this project is to make users aware of complex
+	functionality of system softwares that they are using. Hence for that reason we have
+	embedded several built in hooks into current code base of Xv6 which gives user the
+	step by step information of internal work flow of any given utility like linker, loader or
+	interpreter. This enables her to track down the actual source of that utility very easily
+	and modify it accordingly. This object code review utilities are very much useful for
+	making best use of assignment section of this report.
+
+
+        <hr>
+	
+	 <div id="push"></div>
+
+	 </div>
+	<!-- /.container -->
+
+ 	<!-- Footer -->
+ 	<footer class="footer">
+            <div class="container"><br>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=star&count=false&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=watch&count=false&size=large&v=2" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=fork&count=false&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="220px" height="30px"></iframe>
+	    	<p class="text-muted"> Copyright &copy; 2015</p>
+	    </div>
+	</footer>     
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

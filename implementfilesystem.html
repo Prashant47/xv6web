@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Prashant Gonarkar">
+
+    <title>Modern Business - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Sticky Footer -->
+        <link href="css/sticky-footer.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Learn OS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active">
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Doxygen</a>
+                    </li>
+                    <li>
+                        <a href="resources.html">OS Resources</a>
+                    </li>
+                    
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/zipball/master">Download <strong>ZIP File</strong></a>
+		    </li>
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/tarball/master">Download <strong>TAR Ball</strong></a>
+		    </li>
+		    <li>
+			<a href="http://github.com/prashant47/xv6">Fork On <strong>GitHub</strong></a>
+		    <li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">About
+                    <small>xv6-picoc </small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active"> Implement file system changes in xv6 </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+	<h2>4.2 Increasing Max filesize limit of filesystem in xv6 </h2>
+	<h2>4.2.1 Original block allocator in xv6 filesystem </h2><br> <p  style="font-size:140%" >
+	File and directory content is stored in disk blocks, which must be allocated from a free
+	pool. xv6s block allocator has a bitmap block on disk. It contains one bit per block. ’0’
+	bit indicates that the corresponding data block is free whereas ’1’ bit indicates that it is
+	in use. The bits corresponding to the boot sector, superblock, inode blocks, and bitmap
+	blocks are always set to ’1’. [12]. The current block allocator in xv6 file mechanism uses
+	two functions: The first one is balloc it is used to allocate a new data block on disk,
+	and second one is bfree which is used to free a data block. Balloc calls readsb to read
+	the superblock from the disk or buffer cache into sb. balloc calculates which blocks in
+	filesystem contains datablocks considering the size of boot sector, the superblock and the
+	inodes. This is found by macro BBLOCK. Then it finds out the new potential block that
+	can be used for allocation. This is achieved by finding out the data block entry from
+	bitmap block whose bit is set to ’0’. If it finds such a block, it updates the bitmap and
+	returns the block. The issue of contention arising from two processes trying to access
+	same block on disk is resolved by buffer cache mechanism. It is required for any process
+	to acquire filesystem lock before accessing disk. So at a time only on block can access
+	the disk. Similaraly when a file is deleted or truncated Bfree find the right entry in the
+	bitmap block and clears the bit.<br></p>
+	
+	<h2> 4.2.2 Changes made to on-disk Inode structure </h2><br><p  style="font-size:140%" >
+	The original ondisk inode structure struct dinode contains a size and an array of block
+	numbers. The inode data is found in the blocks listed in the dinodes address array. The
+	first NDIRECT blocks of data is found at the blocks whose block number is mentioned
+	in first NDIRECT entries of that array. These blocks are called direct blocks. The next
+	blocks of data are not listed in the inode but in a data block whose address is stored in
+	another block called as Indirect block. The last entry in the address array gives the
+	address of such indirect block for xv6 filesystem. Thus the first 6 kB (NDIRECTBSIZE)
+	bytes of a file are stored in the blocks listed dinode address array in the inode, while the
+	next 64kB (NINDIRECTBSIZE) bytes are stored only after direct blocks are completely
+	filled.<br>
+	So while changing the current structure, in extension to the current data block struc-
+	ture we have added one more NDINDIRECT block to current inode structure. Each entry
+	in this block represents block address of another block. Each entry of such blocks gives
+	address of another block which actually stores data. Now the main task is to allocate
+	blocks from this entry. This is handled by modified block allocation strategy explained
+	in following section. See Appendix F for further detail. <br> </p>
+	
+	<h2> 4.2.3 Modified block allocation strategy </h2><br><p  style="font-size:140%" >
+	The function bmap manages the representation of the on-disk filesystem and it’s inmemory
+	counterpart. So that higher-level routines such as readi and writei can interact with
+	in memory inode structure. Bmap returns the disk block number of the data block for
+	the inode I. If I does not have such a block yet, bmap allocates one. The function bmap
+	begins by allocating the first NDIRECT blocks are listed in the inode itself. The next
+	data blocks are listed in the indirect block at I.addrs[NDIRECT] entry in that inode’s
+	memory structure. Bmap finds out the indirect block and then reads a block number from
+	within the block. If the block number is not below NDIRECT+NINDIRECT, because of new
+	changes in filesystem now it will track that data block in I.addr[NDINDIRECT].. Hence
+	it gives filesystem wider length. See Appendix F for inode structure.
+
+	</p>
+
+
+        <hr>
+	
+	 <div id="push"></div>
+
+	 </div>
+	<!-- /.container -->
+
+ 	<!-- Footer -->
+ 	<footer class="footer">
+            <div class="container"><br>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=star&count=false&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=watch&count=false&size=large&v=2" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=fork&count=false&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="220px" height="30px"></iframe>
+	    	<p class="text-muted"> Copyright &copy; 2015</p>
+	    </div>
+	</footer>     
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

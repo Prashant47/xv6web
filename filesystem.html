@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Prashant Gonarkar">
+
+    <title>Modern Business - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Sticky Footer -->
+        <link href="css/sticky-footer.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Learn OS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active">
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Doxygen</a>
+                    </li>
+                    <li>
+                        <a href="resources.html">OS Resources</a>
+                    </li>
+                    
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/zipball/master">Download <strong>ZIP File</strong></a>
+		    </li>
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/tarball/master">Download <strong>TAR Ball</strong></a>
+		    </li>
+		    <li>
+			<a href="http://github.com/prashant47/xv6">Fork On <strong>GitHub</strong></a>
+		    <li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">File System Modifications
+                    <small>xv6-picoc </small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active">File System Modifications</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+	<h2>3.3 Filesystem modifications</h2><br><p  style="font-size:140%" >
+	Originally xv6 operating system would used to support at max 64 KB of file size. In
+	order to port new linker and other system utilities to it we need to extend the filesize
+	limit of this structure. Following section will give an overview of underlying filesystem
+	structure along with the required changed that are to be done in order to maximize max
+	file size to 8MB.<br></p>
+
+	
+	<h2>3.3.1 Original xv6 structure</h2><br><p  style="font-size:140%" >
+
+	Current version of xv6 filesystem has 6-layered structure consisting of system call inteface,
+	pathname lookup, directory inodes, inode and block allocator, logging and buffer cache.
+	Every file system has a strategy for where it stores inodes and content blocks on the disk.
+	Current xv6 filesystem divides the disk into several sections. It does not use block 0 as
+	it contains the boot sector. Block 1 is called the superblock. It contains information
+	about the file system i.e. the file system size in blocks, the number of data blocks, the
+	number of inodes, and the number of blocks in the log. All of the other blocks hold
+	inodes, with multiple inodes per block. After these inodes blocks a block is reserved as
+	bitmap block. This block is used to represent which data blocks are in use. All of the
+	remaining blocks are data blocks which contains actual data content of files and directory
+	structure. Some blocks at the end of the disk are reserved for logging mechanism, it is
+	part of the transaction layer.
+	The max size of any file on this filesystem can’t execed 70kB. This depends upon the
+	number of data blocks (DIRECT AND INDICRECT both) allocated for each inode. This
+
+
+	can be given by below formula:<br>
+	max file size = [NDIRECT * BSIZE ] + [NINDIRECT * BSIZE]<br>
+	which becomes 6KB + 64KB = 70 kB.<br>
+	where NDIRECT is the number of direct blocks which is 12. BSIZE is size of each Block
+	on disk 512 Bytes. NINDIRECT is number of indirect blocks which is currently 512/4 i.e.
+	128. The original file system with it’s data block arrangment is shown in above figure<br>
+	</p>
+
+	<h2> 3.3.2 Changes made to increase max file size limit</h2><br><p  style="font-size:140%" >
+
+	The size of max file size of every inode can be increased by adding more number of
+	NINDIRECT blocks to current implementation of filesystem. So as to increase max file size
+	to 8MB we added 1 double indirect block in the inode’s on disk structure. Details of code
+	base changes are discussed in implementation section. The double indirect block is block
+	whose every entry represents a block address of another block. Each entry of every such
+	block represents the block address where actual data is stored. So this gives more space
+	to every inode.
+	But to maintain the overall memory size of inode structure we have cut down 1 NDI-
+	RECT block from disc inode content. So that max filesize in modified filesystem can be
+	given as:<br>
+	max file size = [NINDIRECT * BSIZE + NDINDIRECT * NINDIRECT * BSIZE]<br>
+	which become 8 MB + 64KB 8MB.<br>
+	The modified file system is shown in below figure<br>
+
+	</p>
+
+
+
+
+        <hr>
+	
+	 <div id="push"></div>
+
+	 </div>
+	<!-- /.container -->
+
+ 	<!-- Footer -->
+ 	<footer class="footer">
+            <div class="container"><br>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=star&count=false&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=watch&count=false&size=large&v=2" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=fork&count=false&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="220px" height="30px"></iframe>
+	    	<p class="text-muted"> Copyright &copy; 2015</p>
+	    </div>
+	</footer>     
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

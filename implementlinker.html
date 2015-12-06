@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Prashant Gonarkar">
+
+    <title>Modern Business - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Sticky Footer -->
+        <link href="css/sticky-footer.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Learn OS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active">
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Doxygen</a>
+                    </li>
+                    <li>
+                        <a href="resources.html">OS Resources</a>
+                    </li>
+                    
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/zipball/master">Download <strong>ZIP File</strong></a>
+		    </li>
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/tarball/master">Download <strong>TAR Ball</strong></a>
+		    </li>
+		    <li>
+			<a href="http://github.com/prashant47/xv6">Fork On <strong>GitHub</strong></a>
+		    <li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header"> Implementation of static linker in xv6
+                    <small>xv6-picoc </small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active"> Implementation of static linker in xv6 </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+	
+
+	<h2> 4.3 Linkage editor </h2>
+	<h2> 4.3.1 Implementation of static linker in xv6 </h2> <br><p  style="font-size:140%" >
+
+	The newly modified linker first reads the given object files and for each object it generates
+	two lists, one is of defined symbols and other is of undefined entries using get undefined entries().
+	These lists are then processed subsequently in further stages such as symbol resolution
+	and relocation.<br> </p>
+	
+	<h2> 4.3.2 Symbol resolution </h2><br> <p  style="font-size:140%" > 
+	For Symbol resolution, symbol references are resolved from each pair of object files.
+	resolve undefined reference() takes up as an argument a list of defined symbols of
+	some object file and another list of undefined symbols of any other object file to be linked
+	together. It then finds out if the entry from undefined list is present in the defined list
+	if so, it moves that symbol from list of undefined entries to defined. If such undefined
+	entry is resolved then it sets the argindex flag of that symbol to -1. Finally after all
+	the pairs of files are resolved, definition not found() is called. This function traverses
+	undefined list of every object file and checks if the argindex flag of all of these symbols
+	is set to -1. If an entry is found whose symbol entry doesn’t have argindex set to -1.
+	It implies that some symbol reference is not resolved and prints out appropriate error
+	message. See Appendix D for code of these functions and symbol structure definition.<br> </p>
+
+	<h2> 4.3.3 Relocation </h2><br> <p  style="font-size:140%" >
+	Before relocation, linker calculates total size of resultant binary along with individual
+	size of data section and text section. Then do relocation() takes an argument each
+	object file and it’s text section, data section and their respective position offset in final
+	executable. This is calculated by taking into consideration modulo 32 byte order. That
+	is for second object file in the list it’s text section would start exactly at the address
+	modulo 32 which is next to after end of text section of first object file. Then it reads
+	relocation table of that object file and finds out it’s entry in corresponding list of defined
+	symbols. Then as mentioned in the design section it identifies the type of symbol i.e
+	either R 386 32 or R 386 PC32. Depending upon it’s type it calculates the new offset
+	of the corresponding symbol and puts that value at the address given by that symbol’s
+	relocation table entry.<br>
+
+	Finally all the sections of different object files are merged together and value of entry
+	point is set in Program header. Also total filesize of final executable is updated
+	<br>
+	</p>
+	
+
+        <hr>
+	
+	 <div id="push"></div>
+
+	 </div>
+	<!-- /.container -->
+
+ 	<!-- Footer -->
+ 	<footer class="footer">
+            <div class="container"><br>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=star&count=false&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=watch&count=false&size=large&v=2" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=fork&count=false&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="220px" height="30px"></iframe>
+	    	<p class="text-muted"> Copyright &copy; 2015</p>
+	    </div>
+	</footer>     
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

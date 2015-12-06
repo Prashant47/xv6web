@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Prashant Gonarkar">
+
+    <title>Modern Business - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Sticky Footer -->
+        <link href="css/sticky-footer.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Learn OS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active">
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Doxygen</a>
+                    </li>
+                    <li>
+                        <a href="resources.html">OS Resources</a>
+                    </li>
+                    
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/zipball/master">Download <strong>ZIP File</strong></a>
+		    </li>
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/tarball/master">Download <strong>TAR Ball</strong></a>
+		    </li>
+		    <li>
+			<a href="http://github.com/prashant47/xv6">Fork On <strong>GitHub</strong></a>
+		    <li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Current educational purpose operating systems 
+                    <small>xv6-picoc </small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active">Current educational purpose operating systems   </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+	
+	<h2> 2.1 Current educational purpose operating systems </h2>
+	<p  style="font-size:140%" >
+	<br>
+	We have studied some of the current available education purpose operating system OSes
+	like XINU,sos,linux kernel v0.01,Bluefire OS,MINIX,jos, Plan 9. While studying all these
+	operating systems we have followed guidelines based on following parameters:
+	1. language code should be ANSI C.<br>
+	2. should not have more that 15000 lines of code.<br>
+	3. should follow one of the measure unix standard specifications.<br>
+	4. should be open source and able to compile on qemu emulator in major linux distri-
+	butions.<br>
+	5. should have past history of being used for pedagogical purposes.<br>
+	6. should have well documented manual.<br>
+	A comprehensive study of each of these operating system is presented below.<br></p>
+	
+	
+	<h2>2.1.1 XINU</h2>
+	<p  style="font-size:140%" >
+	<br>
+	XINU [10] stands for Xinu Is Not Unix. It resembles concepts and even name with
+	Unix, but the internal architecture is wholely different. Xinu is a small, elegant operating
+	system that supports dynamic process creation, dynamic memory allocation, network
+	communication, local and remote file systems, a shell and device-independent I/O func-
+	tions. As XINU does not follow any UNIX standards, it falls apart from mainstream of
+	operating system pedology.<br></p>
+	
+	<h2>2.1.2 SOS</h2>
+	<br>
+	<p  style="font-size:140%" >
+	SOS [9] Simple Operating System, is an operating system kernel which aims at being
+	simple to understand and that nonetheless covers concepts and functionalities of modern
+	OSes. The OS code comes with a batch of articles published in the french magazine
+	called Linux Magazine France, during 2004 and 2006. The main problem with SOS is
+	most part of documentation is available in french and most of concepts are implemented
+	in a standalone fashion, apart from standard UNIX prototype.<br></p>
+	
+	<h2>2.1.3 Linux Kernel v0.01</h2><br>
+<p  style="font-size:140%" >
+	This is earliest version of Linux kernel release in early 1991. It comprise of 8000 lines of
+	code only. This can be the best tool for novice developers to learn Linux kernel because
+	current code base has evolved from this tiny release v0.01. But the problem with this
+	vanilla kernel is dependency and compiling environment has been changed significantly
+	since 1991. So this linux-0.01 version can not be complied on today’s modern compilers.
+	Even though it was written considering GCC, but GCC itself has changed a lot since
+	1991. This difficulties make linux-0.01 unsuitable for use of pedagogy.<br></p>
+	
+	<h2>2.1.4 Bluefire OS</h2><br><p  style="font-size:140%" >
+	Bluefire is a didactic OS that was created to show every step of creating a bootstrapping
+	OS. It’s approximately 15,000 lines of code. It’s include primary graphics which is been
+	shown while booting steps. This operating system lacks of some core functionalities like
+	synchronization, standard memory management. The design of this operating system is
+	quiet different from standard UNIX prototypes.<br></p>
+	
+	<h2>2.1.5 MINIX</h2><br><p  style="font-size:140%" >
+	MINIX is a free, open-source, operating system designed to be highly reliable, flexible,
+	and secure. It is based on a tiny microkernel running in kernel mode with the rest of the
+	operating system running as a collection of isolated, protected, processes in user mode.
+	MINIX incorporates microkernel architecture which is difficult to understand for novice
+	students. Also current MINIX version is now become a high end operating system and
+	it’s no more a pedagogical operating system now.<br></p>
+	
+	<h2>2.1.6 Plan 9</h2><br><p  style="font-size:140%" >
+	Plan 9 is a research system developed at Bell Labs starting in the late 1980s. Its
+	original designers and authors were Ken Thompson, Rob Pike, Dave Presotto, and Phil
+	Winterbottom. Plan 9 is an operating system kernel but also a collection of accompanying
+	software. The bulk of the software is predominantly new, written for Plan 9 rather than
+	ported from Unix or other systems. The main problem with this operating system, as it
+	has been evolved since 1980s, it has become a full fledge operating system instead of just
+	a research system.<br></p>
+	
+	<h2>2.1.7 Xv6</h2><br><p  style="font-size:140%" >
+	xv6 is a simple unix-like teaching operating system developed at MIT [13]. xv6 is re-
+	implementation of Dennis Ritchies and Ken Thompsons Unix Version 6 (v6). xv6 is
+	implemented in ANSI C for an x86 based multiprocessors. Xv6 is simple enough to teach
+	operating system walking through its code in a semester. xv6 has implemented most of
+	modern operating system core functionalists which makes easier to start look through in
+	oper- ating system code for a newbie. Xv6 is around 8000 lines code yet still contains the
+	important concepts and organization of Unix. Current users of xv6 include MIT[6],Yale
+	[11],Columbia university, IIT Delhi.<br></p>
+	
+	<h2>2.2 Components of prototype operating systems</h2><br><p  style="font-size:140%" >
+	The selected operating system should have one language process system process either
+	interpreter or compiler. It should also have a minimal library on top of which utilities
+	can run. We have studied such exiting solutions.<br></p>
+	
+	<h2>2.2.1 Introduction to Picoc</h2><br><p  style="font-size:140%" >
+	PicoC is a very small C interpreter for scripting. It was originally written as the
+	script language for a UAV’s on-board flight system. It’s also very suitable for other
+	robotic, embedded and non-embedded applications. The core C source code is around
+	4500 lines of code. It’s not intended to be a complete implementation of ISO C but it
+	has all the essentials. When compiled it only takes very little code space and is also very
+	sparing of data space. This means it can work well in small embedded devices. It’s also
+	a fun example of how to create a very small language implementation while still keeping
+	the code readable. The overall structure and it’s open source nature is the key reason to
+	choose Picoc as a prototype interpreter in current xv6 os.<br></p>
+	
+	<h2>2.2.2 Introduction to dietlibc</h2><br><p  style="font-size:140%" >
+	Dietlibc is a C standard library released under the GNU General Public License Version
+	2, but there are also commercial licences available. It was developed with the help of about
+	100 volunteers by Felix von Leitner with the goal to compile and link programs to the
+	smallest possible size. Dietlibc was developed from scratch and thus only implements the
+	most important and commonly used functions. It is mainly used in embedded devices.
+	Dietlibc is easy to build on linux operating systems and have quite flexible licensing policy
+	which makes it the best choice for using this as a standard library in current xv6 kernel.
+	<br>
+	</p>
+
+        <hr>
+	
+	 <div id="push"></div>
+
+	 </div>
+	<!-- /.container -->
+
+ 	<!-- Footer -->
+ 	<footer class="footer">
+            <div class="container"><br>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=star&count=false&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=watch&count=false&size=large&v=2" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=fork&count=false&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="220px" height="30px"></iframe>
+	    	<p class="text-muted"> Copyright &copy; 2015</p>
+	    </div>
+	</footer>     
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

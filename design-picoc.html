@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Prashant Gonarkar">
+
+    <title>Modern Business - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Sticky Footer -->
+        <link href="css/sticky-footer.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Learn OS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active">
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Doxygen</a>
+                    </li>
+                    <li>
+                        <a href="resources.html">OS Resources</a>
+                    </li>
+                    
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/zipball/master">Download <strong>ZIP File</strong></a>
+		    </li>
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/tarball/master">Download <strong>TAR Ball</strong></a>
+		    </li>
+		    <li>
+			<a href="http://github.com/prashant47/xv6">Fork On <strong>GitHub</strong></a>
+		    <li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header"> Design of platform for Picoc interpreter
+                    <small>xv6-picoc </small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active">Design of platform for Picoc interpreter  </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+	
+	<h2> 3.1 Design of platform for Picoc interpreter</h2>
+	
+	<h2> 3.1.1 Workflow of Picoc </h2>
+	<br><p  style="font-size:140%" >
+	The basic outline of how Picoc interprets the code can be described briefly as follows:<br>
+	1. It first Allocates enough space on heap for loading given program in memory.<br>
+	2. It then tokenizes the given source code into different categories such as variables,
+	function declarations, function definitions etc.<br>
+	3. It then parses the given source code as per the language grammar to find out if there
+	are any early stage syntax errors.<br>
+	4. While parsing the source code it parses one statement at a time, and identifies dif-
+	ferent types of tokens in given statement.It also associates proper semantic meaning
+	to those tokens.<br>
+	5. If while parsing a given statement, it is found that a call to external function is
+	made then definition of that function is first searched in local as well as global list
+	of built-in function libraries.<br>
+	6. Once that function definition is found, a wrapper for that particular library function
+	is called. After some prepossessing, a standard library call inside that wrapper then
+	does the rest of work and returns back. Hence control of flow goes back to interpreter
+	parser engine again.<br>
+	For example, if a call to printf is there in the source of given program then in first
+	step Picoc tokenizes it as Cprintf. In second step it is associated with semantic meaning
+	of function call to it. In third step actual definitions of Cprintf is searched in an list of
+	by default included library files. Here in this case this is in stdio.c. So a call to Cprintf
+	function from stdio.c will be replaced in place of printf. The implementation of Cprintf
+	will then make a call to standard library version of Printf.<br>
+	<br></p>
+
+	<h2> 3.1.2 Adding library support for Picoc </h2>
+	<br><p  style="font-size:140%" >
+	Any intermediate stages of interpreter processing involves many crucial functionalities
+	such as tokenization, symbol generation, semantic linking etc. These all functionalities
+	make use of many of the standard string processing functions such as strtok, strlen,
+	strncmp etc. But currently when we build xv6 kernel these functions are not there in it’s
+	standard C library. Hence firstly we have implemented all of these functions specific to
+	xv6
+	<br></p>
+	<h2> 3.1.3 Building Picoc interpreter in xv6</h2>
+	<br><p  style="font-size:140%" >
+	Right now Picoc can only be build using GCC compiler bundle. As xv6 doesn’t have
+	that right now we have used following approach for building this interpreter.<br>
+	1. First Picoc is built by giving -C option to GCC in standard Linux environment.
+	This option creates relocatable object file of final executable.<br>
+	2. This relocatable executable of Picoc is then linked with the standard library of xv6.
+	So this arrangement makes sure that all the relocatable files are produced by GCC
+	but are finally linked against library provided in xv6.<br>
+	3. While linking these relocatable files against xv6’s standard library all the function
+	definitions that are required or functions which are called by Picoc but whose defi-
+	nition is not found in current library have to be added to current library.<br>
+	<br>
+	</p>
+        <hr>
+	
+	 <div id="push"></div>
+
+	 </div>
+	<!-- /.container -->
+
+ 	<!-- Footer -->
+ 	<footer class="footer">
+            <div class="container"><br>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=star&count=false&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=watch&count=false&size=large&v=2" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=fork&count=false&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="220px" height="30px"></iframe>
+	    	<p class="text-muted"> Copyright &copy; 2015</p>
+	    </div>
+	</footer>     
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

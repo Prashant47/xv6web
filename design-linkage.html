@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Prashant Gonarkar">
+
+    <title>Modern Business - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Sticky Footer -->
+        <link href="css/sticky-footer.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Learn OS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active">
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Doxygen</a>
+                    </li>
+                    <li>
+                        <a href="resources.html">OS Resources</a>
+                    </li>
+                    
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/zipball/master">Download <strong>ZIP File</strong></a>
+		    </li>
+		    <li>
+		        <a href="https://github.com/prashant47/xv6/tarball/master">Download <strong>TAR Ball</strong></a>
+		    </li>
+		    <li>
+			<a href="http://github.com/prashant47/xv6">Fork On <strong>GitHub</strong></a>
+		    <li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Design of Linkage Editor
+                    <small>xv6-picoc </small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active">Design of Linkage Editor </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+	<h2>4.1 Design of Linkage editor for xv6</h2><br><p  style="font-size:140%" >
+	During designing a built-in linker there is one crucial question to be tackled is of deciding
+	type of linker to be built. There are two main types of linkers that are static and dynamic
+	linkers.<br></p>
+	<h2>4.1.1 Static linking and dynamic linking</h2><br><p  style="font-size:140%" >
+	In static linking, linker copies all of the library routines used in the program in executable
+	image. This requires more memory space for every program than dynamic linking. But it
+	is to accommodate and doesn’t require extensive kernel support while loading a program
+	in memory. It also doesn’t require run-time library version to be available in memory all
+	the time during running of program.
+	Whereas in dynamic linking only name of shared library is placed in executable image.
+	Actual linking with the library routines is not performed at compile time. All such shared
+	libraries are placed in memory at some predefined address space. So when the program
+	is run it can refer to those routines even though they are not part of it’s final executable.
+	[3]
+	Though dynamic linking is more advantageous and is the modern day de-facto stan-
+	dard, we have designed static linker for xv6. This choice is made so that original kernel
+	code of xv6 remains simple and easy to read. Also another aspect of dynamic linking is
+	that it requires some complex memory management and process management schemes
+	that will make allow two or more processes two share same piece of common code. So
+	by abiding to basic principle of this project which aims at readability of source code we
+	have opted for static linker in this version of xv6. This is done so that student will easily
+	get hands on experience of tweaking source code of linker without much hassle. Refer
+	assignment sections.<br></p>
+	<h2>4.1.2 Algorithm for symbol resolution used in linker</h2><br><p  style="font-size:140%" >
+	The linker scans all the relocatable object files given on the command line. Finally it
+	converts all the input .o files into final .out. During this scannig , the linker maintains
+	3 sets. First E, which is of relocatable object files that are finally merged to form the
+	final binary, Second U of unresolved symbols, (it contains undefined symbols) and third
+	D, a set of symbols that have been defined in any of the input files. All three of them are
+	initially empty.<br>
+	1. For every input file on the command line, the linker determines if it is an object file.
+	If it is an object file, the linker adds it to set E, and it adds all the respective defined
+	and undefined symbols in set D and U respectively. This process is repeated in loop
+	to include all the files.<br>
+	2. In second step linker tries to match the unresolved symbols in set U against the
+	symbols defined in set D. As such entries are found in set U, it is deleted from there
+	and added to D. That is it verifies if all the previously undefined symbols in certain
+	input file are found in some other input object files as they are processed sequentially
+	so as to resolve undefined references.<br>
+	3. If after step two, set U is nonempty when the linker finishes scanning the input files
+	on the and it prints an error and terminates. As it indicates that some Undefined
+	symbols have not found their respective definitions. Otherwise, it merges and builds
+	the final executable using below mentioned relocation algorithm.<br></p>
+	
+	<h2>4.1.3 Algorithm used for relocation in linker</h2><br><p  style="font-size:140%" >
+	Compilers and assemblers produces intermediate executables which have their code and
+	data sections that by default start at address 0. The linker finally relocates these sections
+	by assigning a relative address to each symbol definition, and then modifying all of the
+	references to those symbols so that they point to this newly modified address location.
+	Relocation is a two-step process:<br></p>
+	<h3>Relocating sections and symbol definitions:</h3><br><p  style="font-size:140%" >
+	In this step, the linker merges all the sections of the same type into a new final section
+	of the same type. For example, the .text sections from the input modules are all merged
+	into one section that will become the .text section for the output executable file with
+	relative address managed as each input file is processed. The linker then assigns run-time
+	memory addresses to the new final sections and to every such section defined by the input
+	object files, and to every symbol defined by the input files. At the end of this step every
+	instruction and global variable in the program has a unique memory location.<br></p>
+	<h3>Relocating symbol references within each sections:</h3><br><p  style="font-size:140%" >
+	In this step, the linker modifies every symbol references in the bodies of the code and
+	data sections so that they point to the correct run-time addresses. To perform this step,
+	the linker relies on data structures in the relocatable object modules known as relocation
+	entries, which are described in next section:
+	relocation entries
+	It is basically a data structure used by POSIX standard ELF format that is being used
+	during process of relocation. It stores necessary information regarding all of the entries
+	in the object files that are to be relocated. So it mainly consists of an offset that is to
+	be added to an address location of entries that are to be modified. It specifies the type
+	of reference for that particular entry like if the address to be modified is of object or
+	function.<br>
+	relocation types<br>
+	ELF defines 11 different relocation types. We have considered only the two most basic
+	relocation types<br></p>
+	<h3> R 386 PC32:</h3><br><p  style="font-size:140%" >
+	This is a 32-bit PC-relative address. That is when such address is used in any instruction
+	then the effective address is calculated by adding the offset mentioned in the instruction to
+	the current run-time value of program counter. Such addresses are generally found in CALL
+	instructions. Where the effective address of some function is calculated by adding the
+	offset encoded in the instruction to current PC value to give the value of the next address
+	in memory. Pointers also make use of this type of relocation types while performing used
+	in instruction.<br></p>
+	<h3> R 386 32: </h3><br><p  style="font-size:140%" >
+	This is a 32-bit absolute address. In case of absolute addressing, the CPU directly uses
+	the 32-bit value encoded in the instruction as the effective address. Such address mode is
+	used by instruction when it is accessing any variable which is defined in the data section
+	of the executable file.<br></p>
+
+
+	<code>
+	foreach section s {
+		foreach r e l o c a t i o n entry r {
+			/∗ p t r t o r e f e r e n c e t o be r e l o c a t e d ∗/
+				3
+				ptr for modify = s section start + r . offset ;
+			5
+				/∗ R e l o c a t e a PC r e l a t i v e r e f e r e n c e ∗/
+				i f ( r . t y p e == R 386 PC32 ) {
+					7
+						/∗
+						ref
+						s
+						run−time a d d r e s s ∗/
+						r e f a d d r = ADDR( s s e c t i o n s t a r t ) + r e f a d d r ;
+					9
+						∗ p t r f o r m o d i f y = (ADDR( r e l o c e n t r y r s y m b o l ) +
+								(∗ p t r f o r m o d i f y − p t r f o r m o d i f y ) ) ;
+					11
+				}
+			/∗ R e l o c a t e an a b s o l u t e r e f e r e n c e ∗/
+				13
+				i f ( r e l o c a t i o n e n t r y . t y p e == R 386 32 )
+				∗ p t r f o r m o d i f y = (ADDR( r e l o c e n t r y r . symbol ) + ∗ p t r f o r m o d i f y ) ;
+			15
+		}
+		17
+	}
+
+
+	</code>
+
+        <hr>
+	
+	 <div id="push"></div>
+
+	 </div>
+	<!-- /.container -->
+
+ 	<!-- Footer -->
+ 	<footer class="footer">
+            <div class="container"><br>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=star&count=false&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+	    	<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=watch&count=false&size=large&v=2" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&repo=xv6&type=fork&count=false&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
+		<iframe src="https://ghbtns.com/github-btn.html?user=prashant47&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="220px" height="30px"></iframe>
+	    	<p class="text-muted"> Copyright &copy; 2015</p>
+	    </div>
+	</footer>     
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
